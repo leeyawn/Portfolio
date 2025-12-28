@@ -89,6 +89,10 @@ const IconButton = ({
       fontWeight: 500,
       margin: 0,
       lineHeight: 1.4,
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      width: '100%',
     }),
     []
   );
@@ -99,6 +103,10 @@ const IconButton = ({
       fontSize: '0.8rem',
       margin: 0,
       lineHeight: 1.4,
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      width: '100%',
     }),
     []
   );

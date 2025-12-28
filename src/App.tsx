@@ -1,4 +1,4 @@
-import { useState, useMemo, type CSSProperties } from 'react';
+import { useState, useMemo, useEffect, type CSSProperties } from 'react';
 import IconButton from './components/IconButton';
 import ritLogo from './assets/ritlogo.jpg';
 import sunyPolyLogo from './assets/sunypolylogo.jpg';
@@ -36,8 +36,25 @@ const GameEngineIcon = () => (
   </svg>
 );
 
-function App() {
+// Hook to detect mobile screen size
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
 
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  return isMobile;
+};
+
+function App() {
+  const isMobile = useIsMobile();
   const [githubHovered, setGithubHovered] = useState(false);
   const [linkedinHovered, setLinkedinHovered] = useState(false);
   const [emailHovered, setEmailHovered] = useState(false);
@@ -45,12 +62,14 @@ function App() {
   const containerStyle = useMemo<CSSProperties>(
     () => ({
       maxWidth: '900px',
-      padding: '2rem',
+      padding: isMobile ? '1rem' : '2rem',
       display: 'flex',
-      gap: '2rem',
+      flexDirection: isMobile ? 'column' : 'row',
+      gap: isMobile ? '1.5rem' : '2rem',
       alignItems: 'flex-start',
+      width: '100%',
     }),
-    []
+    [isMobile]
   );
 
   const leftColumnStyle = useMemo<CSSProperties>(
@@ -59,9 +78,11 @@ function App() {
       display: 'flex',
       flexDirection: 'column',
       gap: '1.5rem',
-      minWidth: '300px',
+      minWidth: isMobile ? '0' : '300px',
+      width: '100%',
+      order: isMobile ? 2 : 0,
     }),
-    []
+    [isMobile]
   );
 
   const sectionTitleStyle = useMemo<CSSProperties>(
@@ -92,9 +113,11 @@ function App() {
       flexDirection: 'column',
       alignItems: 'center',
       gap: '1.5rem',
-      minWidth: '300px',
+      minWidth: isMobile ? '0' : '300px',
+      width: '100%',
+      order: isMobile ? 1 : 0,
     }),
-    []
+    [isMobile]
   );
 
   const profileImageStyle = useMemo<CSSProperties>(
